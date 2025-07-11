@@ -260,9 +260,9 @@ def process_symbol(t, start, end):
         r1 = calculate_returns(df, 21) if data_points >= 21 else np.nan
         r0 = calculate_returns(df, 5) if data_points >= 5 else np.nan
         if pd.notna(vol) and vol > 0:
-            mom = ((0.2 * (r3 if pd.notna(r3) else 0)) +
+            mom = ((0.4 * (r3 if pd.notna(r3) else 0)) +
                    (0.3 * (r1 if pd.notna(r1) else 0)) +
-                   (0.5 * (r0 if pd.notna(r0) else 0))) / vol
+                   (0.3 * (r0 if pd.notna(r0) else 0))) / vol
         else:
             mom = np.nan
         return {
