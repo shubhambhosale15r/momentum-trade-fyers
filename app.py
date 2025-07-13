@@ -346,7 +346,10 @@ def main():
         # Replace loader with data/results
         loading_placeholder.empty()
         if not df.empty:
-            df = df.sort_values("Momentum Score", ascending=False)
+            min_score = df["Momentum Score"].min()
+            max_score = df["Momentum Score"].max()
+            df["Normalized Momentum Score"] = 2 * ((df["Momentum Score"] - min_score) / (max_score - min_score)) - 1
+            df = df.sort_values("Normalized Momentum Score", ascending=False)
             st.dataframe(df.style.format({
                 "Data Points": "{:.0f}",
                 "3-Month Return (%)": "{:.2f}%",
@@ -366,6 +369,10 @@ def main():
             top_unis = get_top_universes_by_momentum()
         loading_placeholder.empty()
         if not top_unis.empty:
+            min_score = top_unis["Average Momentum Score"].min()
+            max_score = top_unis["Average Momentum Score"].max()
+            top_unis["Normalized Average Momentum Score"] = 2 * ((top_unis["Average Momentum Score"] - min_score) / (max_score - min_score)) - 1
+            top_unis = top_unis.sort_values("Normalized Average Momentum Score", ascending=False)
             st.dataframe(top_unis.style.format({"Average Momentum Score": "{:.4f}"}), use_container_width=True)
         else:
             st.warning("No data available for universes ranking.")
@@ -388,7 +395,11 @@ def main():
                     display_loading()
                     top5 = get_top_stocks_from_universe(row['Stock Universe'], STOCK_UNIVERSE[row['Stock Universe']])
                 universe_loading.empty()
-                if not top5.empty:
+                if not top_unis.empty:
+                    min_score = top_unis["Average Momentum Score"].min()
+                    max_score = top_unis["Average Momentum Score"].max()
+                    top_unis["Normalized Average Momentum Score"] = 2 * ((top_unis["Average Momentum Score"] - min_score) / (max_score - min_score)) - 1
+                    top_unis = top_unis.sort_values("Normalized Average Momentum Score", ascending=False)
                     st.dataframe(top5.head(5).style.format({
                         "Data Points": "{:.0f}",
                         "3-Month Return (%)": "{:.2f}%",
@@ -409,6 +420,9 @@ def main():
             top_momentum = get_top_momentum_stocks_overall()
         loading_placeholder.empty()
         if not top_momentum.empty:
+            min_score = top_momentum["Momentum Score"].min()
+            max_score = top_momentum["Momentum Score"].max()
+            top_momentum["Normalized Momentum Score"] = 2 * ((top_momentum["Momentum Score"] - min_score) / (max_score - min_score)) - 1
             st.dataframe(top_momentum.style.format({
                 "Data Points": "{:.0f}",
                 "3-Month Return (%)": "{:.2f}%",
