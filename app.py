@@ -365,7 +365,7 @@ def main():
                 "1-Month Return (%)": "{:.2f}%",
                 "1-Week Return (%)": "{:.2f}%",
                 "Annualized Volatility": "{:.4f}",
-                "Momentum Score": "{:.4f}",
+                # "Momentum Score": "{:.4f}",
                 "Normalized Momentum Score": "{:.4f}"
             }), use_container_width=True)
         else:
@@ -383,7 +383,7 @@ def main():
             top_unis = normalize_column(top_unis, "Average Momentum Score", "Normalized Average Momentum Score")
             top_unis = top_unis.sort_values("Normalized Average Momentum Score", ascending=False)
             st.dataframe(top_unis.style.format({
-                "Average Momentum Score": "{:.4f}",
+                # "Average Momentum Score": "{:.4f}",
                 "Normalized Average Momentum Score": "{:.4f}"
             }), use_container_width=True)
         else:
@@ -415,7 +415,7 @@ def main():
                         "1-Month Return (%)": "{:.2f}%",
                         "1-Week Return (%)": "{:.2f}%",
                         "Annualized Volatility": "{:.4f}",
-                        "Momentum Score": "{:.4f}",
+                        # "Momentum Score": "{:.4f}",
                         "Normalized Momentum Score": "{:.4f}"
                     }), use_container_width=True)
                 else:
@@ -437,7 +437,7 @@ def main():
                 "1-Month Return (%)": "{:.2f}%",
                 "1-Week Return (%)": "{:.2f}%",
                 "Annualized Volatility": "{:.4f}",
-                "Momentum Score": "{:.4f}",
+                # "Momentum Score": "{:.4f}",
                 "Normalized Momentum Score": "{:.4f}"
             }), use_container_width=True)
         else:
