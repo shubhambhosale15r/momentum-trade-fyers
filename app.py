@@ -365,7 +365,6 @@ def main():
                 "1-Month Return (%)": "{:.2f}%",
                 "1-Week Return (%)": "{:.2f}%",
                 "Annualized Volatility": "{:.4f}",
-                # "Momentum Score": "{:.4f}",
                 "Normalized Momentum Score": "{:.4f}"
             }), use_container_width=True)
         else:
