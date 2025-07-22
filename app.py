@@ -366,7 +366,7 @@ def main():
                 "1-Week Return (%)": "{:.2f}%",
                 "Annualized Volatility": "{:.4f}",
                 # "Momentum Score": "{:.4f}",
-                "Normalized Momentum Score": "{:.4f}"
+                # "Normalized Momentum Score": "{:.4f}"
             }), use_container_width=True)
         else:
             st.warning("No data available for this universe.")
