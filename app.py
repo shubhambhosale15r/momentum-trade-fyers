@@ -335,18 +335,6 @@ def display_loading():
         </div>
     """, unsafe_allow_html=True)
 
-def normalize_column(df, score_column, normalized_column):
-    if df.empty:
-        df[normalized_column] = np.nan
-        return df
-    min_score = df[score_column].min()
-    max_score = df[score_column].max()
-    if pd.isna(min_score) or pd.isna(max_score) or max_score == min_score:
-        df[normalized_column] = 0
-    else:
-        df[normalized_column] = 2 * ((df[score_column] - min_score) / (max_score - min_score)) - 1
-    return df
-
 def main():
     # Analyze Stock Universe section
     if st.session_state.analyze_button_clicked:
@@ -357,8 +345,7 @@ def main():
             df, _ = analyze_universe(stock_universe_name, STOCK_UNIVERSE[stock_universe_name])
         loading_placeholder.empty()
         if not df.empty:
-            df = normalize_column(df, "Momentum Score", "Normalized Momentum Score")
-            df = df.sort_values("Normalized Momentum Score", ascending=False)
+            df = df.sort_values("Momentum Score", ascending=False)
             st.dataframe(df.style.format({
                 "Data Points": "{:.0f}",
                 "3-Month Return (%)": "{:.2f}%",
@@ -366,7 +353,6 @@ def main():
                 "1-Week Return (%)": "{:.2f}%",
                 "Annualized Volatility": "{:.4f}",
                 "Momentum Score": "{:.4f}"
-                # "Normalized Momentum Score": "{:.4f}"
             }), use_container_width=True)
         else:
             st.warning("No data available for this universe.")
@@ -380,11 +366,9 @@ def main():
             top_unis = get_top_universes_by_momentum()
         loading_placeholder.empty()
         if not top_unis.empty:
-            top_unis = normalize_column(top_unis, "Average Momentum Score", "Normalized Average Momentum Score")
-            top_unis = top_unis.sort_values("Normalized Average Momentum Score", ascending=False)
+            top_unis = top_unis.sort_values("Average Momentum Score", ascending=False)
             st.dataframe(top_unis.style.format({
-                # "Average Momentum Score": "{:.4f}",
-                "Normalized Average Momentum Score": "{:.4f}"
+                "Average Momentum Score": "{:.4f}"
             }), use_container_width=True)
         else:
             st.warning("No data available for universes ranking.")
@@ -400,7 +384,7 @@ def main():
         if top_unis.empty:
             st.warning("No universe data available.")
         else:
-            for index, row in top_unis.iterrows():
+            for index, row in top_unis.head(3).iterrows():
                 st.markdown(f"### {row['Stock Universe']} (Avg Score: {row['Average Momentum Score']:.4f})")
                 universe_loading = st.empty()
                 with universe_loading.container():
@@ -408,7 +392,6 @@ def main():
                     top5 = get_top_stocks_from_universe(row['Stock Universe'], STOCK_UNIVERSE[row['Stock Universe']])
                 universe_loading.empty()
                 if not top5.empty:
-                    top5 = normalize_column(top5, "Momentum Score", "Normalized Momentum Score")
                     st.dataframe(top5.head(5).style.format({
                         "Data Points": "{:.0f}",
                         "3-Month Return (%)": "{:.2f}%",
@@ -416,7 +399,6 @@ def main():
                         "1-Week Return (%)": "{:.2f}%",
                         "Annualized Volatility": "{:.4f}",
                         "Momentum Score": "{:.4f}"
-                        # "Normalized Momentum Score": "{:.4f}"
                     }), use_container_width=True)
                 else:
                     st.write(f"No stocks data for {row['Stock Universe']}")
@@ -430,7 +412,6 @@ def main():
             top_momentum = get_top_momentum_stocks_overall()
         loading_placeholder.empty()
         if not top_momentum.empty:
-            top_momentum = normalize_column(top_momentum, "Momentum Score", "Normalized Momentum Score")
             st.dataframe(top_momentum.style.format({
                 "Data Points": "{:.0f}",
                 "3-Month Return (%)": "{:.2f}%",
@@ -438,7 +419,6 @@ def main():
                 "1-Week Return (%)": "{:.2f}%",
                 "Annualized Volatility": "{:.4f}",
                 "Momentum Score": "{:.4f}"
-                # "Normalized Momentum Score": "{:.4f}"
             }), use_container_width=True)
         else:
             st.warning("No high momentum data available.")
