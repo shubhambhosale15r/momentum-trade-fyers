@@ -282,7 +282,7 @@ def process_symbol(t, start, end):
 
         # ====== NORMALIZATION IMPROVEMENTS ======
         # Use MEDIAN volume (resistant to outliers) and cap extremes
-        median_volume = df['Volume'].median()
+        median_volume = df['Volume'].tail(63).median()
         
         pvt_5_norm = np.log1p(pvt_5 / median_volume)   if median_volume > 0 else 0  # Log scale for better distribution
         pvt_21_norm = np.log1p(pvt_21 / median_volume) if median_volume > 0 else 0  # Log scale for better distribution
@@ -306,7 +306,7 @@ def process_symbol(t, start, end):
         final_mom = (0.5 * price_mom) + (0.5 * pvt_mom)
 
         # ====== LIQUIDITY FILTERS ======
-        avg_volume = df['Volume'].mean()
+        avg_volume = df['Volume'].tail(63).mean()
         # if avg_volume < 100000 or df['Close'].iloc[-1] < 10:  # Min 100K shares and $10 price
             # return None
 
