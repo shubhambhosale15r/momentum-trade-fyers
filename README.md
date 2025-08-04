@@ -1,1 +1,1 @@
-https://swingtradescanner.streamlit.app/
+
