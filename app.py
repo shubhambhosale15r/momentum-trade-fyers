@@ -386,7 +386,7 @@ def main():
         if top_unis.empty:
             st.warning("No universe data available.")
         else:
-            for index, row in top_unis.head(3).iterrows():
+            for index, row in top_unis.head(10).iterrows():
                 st.markdown(f"### {row['Stock Universe']} (Avg Score: {row['Average Momentum Score']:.4f})")
                 universe_loading = st.empty()
                 with universe_loading.container():
